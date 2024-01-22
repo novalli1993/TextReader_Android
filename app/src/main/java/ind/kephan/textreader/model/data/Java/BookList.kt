@@ -1,4 +1,4 @@
-package ind.kephan.textreader.model.data
+package ind.kephan.textreader.model.data.Java
 
 class BookList(book: Book) {
     private var totalNum = 0

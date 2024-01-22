@@ -1,7 +1,9 @@
 package ind.kephan.textreader.model.data
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 class Book() {
-    internal val name: String = "卡徒"
-    internal val page: Int = 114514
-    internal val path: String = "./res/test/卡徒.txt"
+
 }

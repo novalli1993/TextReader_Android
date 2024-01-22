@@ -1,6 +1,6 @@
 package ind.kephan.textreader.viewmodel
 
-import ind.kephan.textreader.model.data.BookList
+import ind.kephan.textreader.model.data.Java.BookList
 
 class PrintList(bookList: BookList) {
     private val numb: Int = bookList.getNum()
