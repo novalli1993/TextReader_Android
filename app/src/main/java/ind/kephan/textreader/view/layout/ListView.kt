@@ -26,8 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import ind.kephan.textreader.LatestNewsScreen
 import ind.kephan.textreader.R
-import ind.kephan.textreader.model.data.Java.Book
-import ind.kephan.textreader.model.data.Java.BookList
+import ind.kephan.textreader.model.data.Book
 import ind.kephan.textreader.view.theme.TextReaderTheme
 import ind.kephan.textreader.viewmodel.PrintList
 
@@ -143,7 +142,7 @@ fun Item_Book(
 fun BasePreview() {
     TextReaderTheme {
 //        val printList = null
-        val printList = PrintList(bookList = BookList(Book()))
-        Base(printList.getNumb(),printList.getNames(),printList.getPages())
+//        val printList = PrintList(bookList = BookList(Book()))
+//        Base(printList.getNumb(),printList.getNames(),printList.getPages())
     }
 }
