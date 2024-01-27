@@ -26,9 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import ind.kephan.textreader.LatestNewsScreen
 import ind.kephan.textreader.R
-import ind.kephan.textreader.model.data.Book
 import ind.kephan.textreader.view.theme.TextReaderTheme
-import ind.kephan.textreader.viewmodel.PrintList
 
 class ListView : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,74 +34,50 @@ class ListView : ComponentActivity() {
         setContent {
             TextReaderTheme {
                 // A surface container using the 'background' color from the theme
-                LatestNewsScreen()
+                ListContent()
             }
         }
     }
 }
 
 @Composable
-fun Base(
+fun ListContent(
     numbs: Int = 0,
     names: MutableList<String> = mutableListOf(),
-    pages: MutableList<Int> = mutableListOf(),
+    pages: MutableList<Int> = mutableListOf()
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
-    ) {
-        Surface(
+    Base("阅读器") {
+        ListPainter(numbs, names, pages)
+    }
+}
+
+@Composable
+fun ListPainter(
+    numbs: Int,
+    names: MutableList<String>,
+    pages: MutableList<Int>
+) {
+    if (numbs == 0) {
+        return Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxWidth()
-                .zIndex(15F),
-            shadowElevation = 10.dp
-        ){
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary)
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                Text(
-                    text = "阅读器",
-                    fontSize = 24.sp,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-                Image(
-                    painter = painterResource(R.drawable.dots_white),
-                    contentDescription = "setting",
-                    modifier = Modifier.size(18.dp)
-                )
-            }
+                .zIndex(0F)
+                .fillMaxSize()
+        ) {
+            Text(
+                text = "暂时没有书籍",
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground
+            )
         }
-        if (numbs == 0) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .zIndex(0F)
-                    .fillMaxSize()
-                    .align(Alignment.CenterHorizontally)
-            ) {
-                Text(
-                    text = "暂时没有书籍",
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.CenterHorizontally)
-            ) {
-                for ((name, page) in names.zip(pages)) {
-                    Item_Book(name, page)
-                }
+    } else {
+        return Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            for ((name, page) in names.zip(pages)) {
+                Item_Book(name, page)
             }
         }
     }
@@ -111,8 +85,8 @@ fun Base(
 
 @Composable
 fun Item_Book(
-    name: String = "first book",
-    page: Int = 129,
+    name: String,
+    page: Int,
 ) {
     Surface(modifier = Modifier
         .fillMaxWidth()
@@ -139,10 +113,8 @@ fun Item_Book(
 
 @Preview
 @Composable
-fun BasePreview() {
+fun ListContentPreview() {
     TextReaderTheme {
-//        val printList = null
-//        val printList = PrintList(bookList = BookList(Book()))
-//        Base(printList.getNumb(),printList.getNames(),printList.getPages())
+        ListContent()
     }
 }
