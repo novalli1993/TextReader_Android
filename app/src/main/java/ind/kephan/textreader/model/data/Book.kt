@@ -10,12 +10,12 @@ import java.util.UUID
 data class Book(
     @PrimaryKey
     val id: Long,
-    var name: String,
+    val name: String,
     val size: Long,
-    val createTime: Date
+    val createTime: Long
 ) {
     companion object {
-        fun build(name: String, size: Long, createTime: Date): Book {
+        fun build(name: String, size: Long, createTime: Long): Book {
             return Book(
                 id = UUID.randomUUID().mostSignificantBits and Long.MAX_VALUE,
                 name = name,

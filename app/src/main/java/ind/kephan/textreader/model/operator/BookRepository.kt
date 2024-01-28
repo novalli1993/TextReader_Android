@@ -25,6 +25,22 @@ class BookRepository (private val bookDao: BookDao) {
         }
     }
 
+    suspend fun updateBook(book: Book){
+        withContext(IO) {
+            bookDao.updateBook(book)
+        }
+    }
+
+    suspend fun deleteBook(book: Book){
+        withContext(IO) {
+            bookDao.deleteBook(book)
+        }
+    }
+
+    fun getBookByName(name: String): Book? {
+        return bookDao.getBookByName(name)
+    }
+
     private fun isExist(book: Book): Boolean {
         return bookDao.getBookByName(book.name) != null
     }

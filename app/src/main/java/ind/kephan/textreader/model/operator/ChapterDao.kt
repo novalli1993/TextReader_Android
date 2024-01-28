@@ -10,8 +10,8 @@ import ind.kephan.textreader.model.data.Chapter
 
 @Dao
 interface ChapterDao {
-    @Query("SELECT * FROM chapters WHERE id = :id")
-    fun getChapterById(id: Long): Chapter
+    @Query("SELECT * FROM chapters WHERE bookId = :bookId AND id = :id")
+    fun getChapterById(bookId: Long, id: Long): Chapter
     @Query("SELECT * FROM chapters WHERE bookId = :bookId ORDER BY id")
     fun getAllChapters(bookId: Long): List<Chapter>
     @Insert
