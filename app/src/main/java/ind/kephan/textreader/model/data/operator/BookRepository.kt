@@ -1,7 +1,7 @@
-package ind.kephan.textreader.model.operator
+package ind.kephan.textreader.model.data.operator
 
 import ind.kephan.textreader.model.data.Book
-import ind.kephan.textreader.model.operator.BookDao
+import ind.kephan.textreader.model.data.operator.BookDao
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -45,12 +45,11 @@ class BookRepository (private val bookDao: BookDao) {
         return bookDao.getBookByName(book.name) != null
     }
 
-    
     // 单例模式
     companion object {
         private var instance: BookRepository? = null
 
-        fun getInstance(bookDao: BookDao): BookRepository{
+        fun getInstance(bookDao: BookDao): BookRepository {
             return instance ?: synchronized(this){
                 instance ?: BookRepository(bookDao).also { instance = it }
             }

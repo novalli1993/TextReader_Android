@@ -1,4 +1,4 @@
-package ind.kephan.textreader.model.operator
+package ind.kephan.textreader.model.data.operator
 
 import ind.kephan.textreader.model.data.Chapter
 import kotlinx.coroutines.Dispatchers.IO
@@ -42,7 +42,7 @@ class ChapterRepository(private val chapterDao: ChapterDao) {
     companion object {
         private var instance: ChapterRepository? = null
 
-        fun getInstance(chapterDao: ChapterDao): ChapterRepository{
+        fun getInstance(chapterDao: ChapterDao): ChapterRepository {
             return instance ?: synchronized(this){
                 instance ?: ChapterRepository(chapterDao).also { instance = it }
             }

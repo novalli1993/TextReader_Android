@@ -14,7 +14,7 @@ data class Chapter(
     val filePath: String
 ) {
     companion object {
-        fun build(bookId: Long, title: String, filePath: String): Chapter{
+        fun build(bookId: Long, title: String, filePath: String): Chapter {
             return Chapter(
                 bookId = bookId,
                 title = title,

@@ -1,4 +1,4 @@
-package ind.kephan.textreader.model.operator
+package ind.kephan.textreader.model.data.operator
 
 import androidx.room.Dao
 import androidx.room.Delete
