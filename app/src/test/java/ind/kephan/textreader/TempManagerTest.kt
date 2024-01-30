@@ -3,18 +3,33 @@ package ind.kephan.textreader
 import ind.kephan.textreader.model.data.operator.TempManager
 import org.junit.Test
 import java.io.File
+import java.io.FileReader
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class TempManagerTest {
-    private val path = "J:\\Study\\test_short.txt"
+    private val path = "J:\\Study\\卡徒.txt"
     private val file = File(path)
+    val cachePath = "C:\\Users\\noval\\Downloads\\txtreader"
     @Test
     fun tempFormatTest(){
         val tempFormat = TempManager()
-        val (book, _) = tempFormat.saveFiles(file)
+        val (book, chapters) = tempFormat.splitFile(file, cachePath)
         val dateFormat = SimpleDateFormat("z yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        println(dateFormat.format(Date(book.createTime)))
+        println(book.id)
+        println(book.chapterCount)
+        println(chapters.size)
+        println(chapters[0].id)
+        println(chapters[0].title)
+        println(chapters[0].filePath)
+        println(chapters[1].id)
+        println(chapters[1].title)
+        println(chapters[1].filePath)
+        println(chapters[2].id)
+        println(chapters[2].title)
+        println(chapters[2].filePath)
+        val reader = FileReader(File(chapters[2].filePath))
+        println(reader.readLines())
+        tempFormat.deleteFiles(chapters.subList(100,200))
     }
 }

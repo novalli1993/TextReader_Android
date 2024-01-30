@@ -10,7 +10,7 @@ data class Book(
     val id: Long,
     val name: String,
     val size: Long,
-    val chapterCount: Int,
+    var chapterCount: Int,
     val createTime: Long
 ) {
     companion object {

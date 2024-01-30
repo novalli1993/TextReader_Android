@@ -5,48 +5,70 @@ import ind.kephan.textreader.model.data.Chapter
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
+import java.io.FileWriter
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 
 class TempManager {
-    fun saveFiles(file: File): Pair<Book, MutableList<Chapter>> {
-        val name: String = file.name
-        val size: Long = file.length()
-        val chapterCount: Int
+    fun splitFile(reader: BufferedReader, name: String, size: Long, cachePath: String): Pair<Book, MutableList<Chapter>> {
+        var chapterIndex = 1
 
-        val bookId: Long
+        val book = Book.build(name, size, 0)
+        val bookId = book.id
 
         val titles: MutableList<String> = mutableListOf()
         val filePaths: MutableList<String> = mutableListOf()
         val filePieces: MutableList<String> = mutableListOf()
-        val reader = BufferedReader(FileReader(file))
         var line: String?
+        val tmpPath = "$cachePath\\$bookId"
+        val tmpFolder = File(tmpPath)
+        if (!tmpFolder.exists()) {
+            tmpFolder.mkdirs()
+        }
         while (reader.readLine().also { line = it } != null) {
             if (isTitle(line)) {
                 line?.let { titles.add(it) }
-                // TODO 临时的文件地址
-                filePaths.add(filePieces.size.toString())
 
-                filePieces.clear()
+                if (filePieces.isNotEmpty()){
+                    val chapterFile = "$tmpPath\\$chapterIndex.txt"
+                    saveChapter(chapterFile, filePieces)
+                    filePaths.add(chapterFile)
+                    filePieces.clear()
+                    chapterIndex ++
+                }
             } else {
                 line?.let { filePieces.add(it) }
             }
         }
-        chapterCount = filePaths.size
-        val book = Book.build(name, size, chapterCount)
-        bookId = book.id
+        if (filePieces.isNotEmpty()){
+            val chapterFile = "$tmpPath\\$chapterIndex.txt"
+            saveChapter(chapterFile, filePieces)
+            filePaths.add(chapterFile)
+            filePieces.clear()
+        }
+        if (titles.size < filePaths.size) {
+            titles.add(0,"引子")
+        }
+        book.chapterCount = filePaths.size
         val chapters: MutableList<Chapter> = mutableListOf()
         titles.zip(filePaths).forEach { (title, filePath) ->
             chapters.add(Chapter.build(bookId, title, filePath))
         }
         return book to chapters
     }
+    fun splitFile(file: File, cachePath: String): Pair<Book, MutableList<Chapter>> {
+        return splitFile(BufferedReader(FileReader(file)), file.name, file.length(), cachePath)
+    }
 
     fun deleteFiles(chapters: List<Chapter>) {
+        val mainDir = File(chapters[0].filePath).parentFile ?: return
         chapters.forEach { chapter ->
             val file = File(chapter.filePath)
             file.delete()
+        }
+        if (mainDir.list().isEmpty()) {
+            mainDir.delete()
         }
     }
 
@@ -56,9 +78,24 @@ class TempManager {
             """
             \s*\S*(第[0-9|零一二三四五六七八九十壹贰叁肆伍陆柒捌玖拾百千万]+[节章卷回话]|[c|C]hapter.*[0-9]|☆、.*|[上中下终]卷|卷[0-9|零一二三四五六七八九十壹贰叁肆伍陆柒捌玖拾]+|[引子|楔子|序][
             \s]|[Ll][Vv].[0-9]+|－Quiz [0-9]+).*
-            """.trimIndent()
+            """.trim()
         val p: Pattern = Pattern.compile(r)
         val m: Matcher = p.matcher(paragraph)
         return m.matches()
+    }
+
+    private fun paragraphFormat(p: String): String {
+        return p.trim()
+    }
+
+    private fun saveChapter(path: String, filePieces: MutableList<String>) {
+        val tmp = File(path)
+        val writer = FileWriter(tmp, true)
+        filePieces.forEach {p ->
+            if (p.isNotBlank()) {
+                writer.write("${paragraphFormat(p)}\n")
+            }
+        }
+        writer.close()
     }
 }
