@@ -51,6 +51,8 @@ android {
 }
 
 dependencies {
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     // room
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")

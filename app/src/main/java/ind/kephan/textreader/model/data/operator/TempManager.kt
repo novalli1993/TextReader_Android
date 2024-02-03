@@ -11,7 +11,12 @@ import java.util.regex.Pattern
 
 
 class TempManager {
-    fun splitFile(reader: BufferedReader, name: String, size: Long, cachePath: String): Pair<Book, MutableList<Chapter>> {
+    fun splitFile(
+        reader: BufferedReader,
+        name: String,
+        size: Long,
+        cachePath: String
+    ): Pair<Book, MutableList<Chapter>> {
         var chapterIndex = 1
 
         val book = Book.build(name, size, 0)
@@ -30,25 +35,25 @@ class TempManager {
             if (isTitle(line)) {
                 line?.let { titles.add(it) }
 
-                if (filePieces.isNotEmpty()){
+                if (filePieces.isNotEmpty()) {
                     val chapterFile = "$tmpPath\\$chapterIndex.txt"
                     saveChapter(chapterFile, filePieces)
                     filePaths.add(chapterFile)
                     filePieces.clear()
-                    chapterIndex ++
+                    chapterIndex++
                 }
             } else {
                 line?.let { filePieces.add(it) }
             }
         }
-        if (filePieces.isNotEmpty()){
+        if (filePieces.isNotEmpty()) {
             val chapterFile = "$tmpPath\\$chapterIndex.txt"
             saveChapter(chapterFile, filePieces)
             filePaths.add(chapterFile)
             filePieces.clear()
         }
         if (titles.size < filePaths.size) {
-            titles.add(0,"引子")
+            titles.add(0, "引子")
         }
         book.chapterCount = filePaths.size
         val chapters: MutableList<Chapter> = mutableListOf()
@@ -57,17 +62,18 @@ class TempManager {
         }
         return book to chapters
     }
+
     fun splitFile(file: File, cachePath: String): Pair<Book, MutableList<Chapter>> {
         return splitFile(BufferedReader(FileReader(file)), file.name, file.length(), cachePath)
     }
 
     fun deleteFiles(chapters: List<Chapter>) {
         val mainDir = File(chapters[0].filePath).parentFile ?: return
-        chapters.forEach { chapter ->
-            val file = File(chapter.filePath)
+        chapters.forEach {
+            val file = File(it.filePath)
             file.delete()
         }
-        if (mainDir.list().isEmpty()) {
+        if (mainDir.list()?.isEmpty() == true) {
             mainDir.delete()
         }
     }
@@ -91,9 +97,9 @@ class TempManager {
     private fun saveChapter(path: String, filePieces: MutableList<String>) {
         val tmp = File(path)
         val writer = FileWriter(tmp, true)
-        filePieces.forEach {p ->
-            if (p.isNotBlank()) {
-                writer.write("${paragraphFormat(p)}\n")
+        filePieces.forEach {
+            if (it.isNotBlank()) {
+                writer.write("${paragraphFormat(it)}\n")
             }
         }
         writer.close()

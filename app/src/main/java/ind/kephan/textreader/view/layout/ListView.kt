@@ -3,6 +3,7 @@ package ind.kephan.textreader.view.layout
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +29,7 @@ import ind.kephan.textreader.LatestNewsScreen
 import ind.kephan.textreader.R
 import ind.kephan.textreader.view.theme.TextReaderTheme
 
-class ListView : ComponentActivity() {
+class ListView: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
