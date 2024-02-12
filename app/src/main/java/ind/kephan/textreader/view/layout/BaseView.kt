@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +38,7 @@ fun Base(
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(52.dp)
                 .zIndex(15F),
             shadowElevation = 10.dp
         ){
@@ -46,7 +48,7 @@ fun Base(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.primary)
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(start = 8.dp, end = 8.dp)
             ) {
                 Text(
                     text = viewName,
@@ -68,6 +70,8 @@ fun Base(
 @Composable
 fun BasePreview() {
     TextReaderTheme {
-        Base("基础视图"){}
+        Base("基础视图"){
+            ReadViewPreview()
+        }
     }
 }

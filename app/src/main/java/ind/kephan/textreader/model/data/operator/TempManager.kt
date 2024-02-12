@@ -6,6 +6,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
+import java.io.RandomAccessFile
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -65,6 +66,10 @@ class TempManager {
 
     fun splitFile(file: File, cachePath: String): Pair<Book, MutableList<Chapter>> {
         return splitFile(BufferedReader(FileReader(file)), file.name, file.length(), cachePath)
+    }
+
+    fun readChapter(chapter: Chapter): BufferedReader {
+        return BufferedReader(FileReader(chapter.filePath))
     }
 
     fun deleteFiles(chapters: List<Chapter>) {

@@ -3,7 +3,6 @@ package ind.kephan.textreader
 import ind.kephan.textreader.model.data.operator.TempManager
 import org.junit.Test
 import java.io.File
-import java.io.FileReader
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -28,8 +27,6 @@ class TempManagerTest {
         println(chapters[2].id)
         println(chapters[2].title)
         println(chapters[2].filePath)
-        val reader = FileReader(File(chapters[2].filePath))
-        println(reader.readLines())
         tempFormat.deleteFiles(chapters.subList(100,200))
     }
 }
